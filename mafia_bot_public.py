@@ -801,7 +801,7 @@ def help_command(bot,update): #Help
     "/remind: Sends reminders to all players who haven't yet submitted their night actions.\n" \
     "/abort: Abort the current game."
 
-    bot.sendMessage(chat_id=update.message.chat_id, text=helptext,reply_to_message_id=update.message.message_id)
+    context.bot.sendMessage(chat_id=update.message.chat_id, text=helptext,reply_to_message_id=update.message.message_id)
 
 
 help_handler = CommandHandler('help', help_command)
@@ -810,7 +810,7 @@ dispatcher.add_handler(help_handler)
 ###
 
 def start(bot,update): #Start message
-    bot.sendMessage(chat_id=update.message.chat_id, text="Welcome! I'm Emeric, the TCoD Mafia Bot. "
+    context.bot.sendMessage(chat_id=update.message.chat_id, text="Welcome! I'm Emeric, the TCoD Mafia Bot. "
     "To create a new game, type /create in the group you want to play in. "
     "Use /help to see what commands are available. Have fun, and don't forget to tell MD about any bugs you find!\n\n"
     "RECENT UPDATES:\n"
@@ -831,9 +831,9 @@ def create(bot, update): #Creates a new game
     global group_id
     global test_mode
     if not phase == 'off':
-        bot.sendMessage(chat_id=update.message.chat_id, text="A game already exists.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="A game already exists.",reply_to_message_id=update.message.message_id)
     elif update.message.chat.type == 'private' or update.message.chat.type == 'channel':
-        bot.sendMessage(chat_id=update.message.chat_id, text="Type /create in the group where you want to play. Be sure to invite me to it first!",
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Type /create in the group where you want to play. Be sure to invite me to it first!",
         reply_to_message_id=update.message.message_id)
     else:
         host_id = update.message.from_user.id
@@ -841,14 +841,14 @@ def create(bot, update): #Creates a new game
         group_id = update.message.chat_id
         print('Group ID: ' + str(group_id)) #Testing
         phase = 'startup'
-        bot.sendMessage(chat_id=group_id, text="A new game has been created by " + host_name + "!\n"
+        context.bot.sendMessage(chat_id=group_id, text="A new game has been created by " + host_name + "!\n"
         "Message /join to the bot to join.\n"
         "Type /playerlist to see who has joined so far.\n\n" +
         host_name + ", choose roles for the setup using /add.\nUse /rolelist to show the current setup and /resetroles to clear it.\n"
         "Use /randomize to generate a random setup.\n\n" +
         host_name + " must type /ready when everyone has joined to begin the game.")
         if test_mode:
-            bot.sendMessage(chat_id=group_id, text="NOTE: The bot has been set to TEST MODE, meaning games will never actually end, "
+            context.bot.sendMessage(chat_id=group_id, text="NOTE: The bot has been set to TEST MODE, meaning games will never actually end, "
             "even if win conditions are met. If you see this, you're not supposed to. Use /testmode to turn it off.")
 
 
@@ -865,7 +865,7 @@ def testmode(bot,update): #Turn on test mode
         chat_id = update.message.chat_id
     else:
         chat_id = group_id
-    bot.sendMessage(chat_id=chat_id, text="TEST MODE has now been set to " + str(test_mode) + ".")
+    context.bot.sendMessage(chat_id=chat_id, text="TEST MODE has now been set to " + str(test_mode) + ".")
 
 testmode_handler = CommandHandler('testmode', testmode)
 dispatcher.add_handler(testmode_handler)
@@ -876,14 +876,14 @@ def join(bot, update): #Lets a player join during startup
     global player_dict
     global group_id
     if phase == 'off':
-        bot.sendMessage(chat_id=update.message.chat_id, text="There is no game to join.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="There is no game to join.",reply_to_message_id=update.message.message_id)
     elif update.message.from_user.id in player_dict:
-        bot.sendMessage(chat_id=update.message.chat_id, text="You have already joined.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="You have already joined.",reply_to_message_id=update.message.message_id)
     elif not phase == 'startup':
-        bot.sendMessage(chat_id=update.message.chat_id, text="Sorry, the game has already started. Join the next one!",
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Sorry, the game has already started. Join the next one!",
         reply_to_message_id=update.message.message_id)
     elif not update.message.chat.type == 'private':
-        bot.sendMessage(chat_id=update.message.chat_id, text="To /join, please message me privately.",
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="To /join, please message me privately.",
         reply_to_message_id=update.message.message_id)
     else:
         ##Add the player
@@ -995,7 +995,7 @@ def join(bot, update): #Lets a player join during startup
                         "Stryke one! Stryke two! Aaaand you're out."])
 
         string += bonus_string
-        bot.sendMessage(chat_id=group_id, text=string)
+        context.bot.sendMessage(chat_id=group_id, text=string)
 
         ##Personal confirmation
         string = "You have joined the game!\n"
@@ -1013,7 +1013,7 @@ def join(bot, update): #Lets a player join during startup
                         "Glad to have you on board the murder train, " + name + ".",
                         "I hope you'll enjoy it. I've cooked up a good one this time!"])
         string += bonus_string
-        bot.sendMessage(chat_id=update.message.chat_id, text=string,reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text=string,reply_to_message_id=update.message.message_id)
 
 
 
@@ -1025,7 +1025,7 @@ dispatcher.add_handler(join_handler)
 def playerlist(bot,update): #Returns a list of players who have joined
     global player_dict
     if len(player_dict) == 0:
-        bot.sendMessage(chat_id=update.message.chat_id, text="No players yet.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="No players yet.",reply_to_message_id=update.message.message_id)
     else:
         string = 'The players are:\n'
         for player_id in player_dict:
@@ -1035,7 +1035,7 @@ def playerlist(bot,update): #Returns a list of players who have joined
             elif player.status == 'Dead':
                 string += player.name + ' (' + player.status + ", " + player.alignment + ')\n'
         string = string[:-1]
-        bot.sendMessage(chat_id=update.message.chat_id, text=string)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text=string)
 
 playerlist_handler = CommandHandler('playerlist',playerlist)
 dispatcher.add_handler(playerlist_handler)
@@ -1049,16 +1049,16 @@ def addrole(bot,update,args): #Add role to setup
     global role_database
     player_id = update.message.from_user.id
     if phase == 'off':
-        bot.sendMessage(chat_id=update.message.chat_id, text="Create a game first.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Create a game first.",reply_to_message_id=update.message.message_id)
     elif not player_id == host_id:
-        bot.sendMessage(chat_id=update.message.chat_id, text="Only the host can add roles.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Only the host can add roles.",reply_to_message_id=update.message.message_id)
     elif not phase == 'startup':
         bot.sendMessage(chat_id=update.message.chat_id, text="You can only add roles during startup.",reply_to_message_id=update.message.message_id)
     elif len(args) == 0:
         string = 'Type "/add [role]" to add it to the current setup.\nThe available roles right now are:'
         for role in sorted(role_database):
             string += "\n" + role
-        bot.sendMessage(chat_id=update.message.chat_id, text=string,reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text=string,reply_to_message_id=update.message.message_id)
     else:
         #Not case sensitive
         for i in range(len(args)):
@@ -1073,7 +1073,7 @@ def addrole(bot,update,args): #Add role to setup
             string = "You have added " + role_name + " to the setup!\n\nThe current setup includes:"
             for role in roles:
                 string += "\n" + role.name + " (" + role.alignment + ")"
-            bot.sendMessage(chat_id=update.message.chat_id, text=string,reply_to_message_id=update.message.message_id)
+            context.bot.sendMessage(chat_id=update.message.chat_id, text=string,reply_to_message_id=update.message.message_id)
 
 
 
@@ -1090,7 +1090,7 @@ def rolelist(bot,update): #View the role setup
     if phase == 'off':
         bot.sendMessage(chat_id=update.message.chat_id, text="Create a game first.",reply_to_message_id=update.message.message_id)
     elif not player_id == host_id:
-        bot.sendMessage(chat_id=update.message.chat_id, text="Only the host can request the role setup.",reply_to_message_id=update.message.message_id)
+        context.bot, text="Only the host can request the role setup.",reply_to_message_id=update.message.message_id)
     elif len(roles) == 0:
         bot.sendMessage(chat_id=update.message.chat_id, text="No roles yet.",reply_to_message_id=update.message.message_id)
     else:
