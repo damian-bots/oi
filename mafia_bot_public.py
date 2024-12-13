@@ -12,12 +12,12 @@ from random import choice
 from random import randint
 import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
-updater = Updater(token='') #TOKEN REDACTED
+updater = Updater(token='7717376439:AAHUUpfF-wY_L__bEX2QEnecIX0z0K77c04') #TOKEN REDACTED
 dispatcher = updater.dispatcher
 
 ###FRIEND LIST
 
-friend_dict = {}
+friend_dict = {6848223695}
 #FRIEND IDS REDACTED
 
 
