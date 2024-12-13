@@ -1090,16 +1090,16 @@ def rolelist(bot,update): #View the role setup
     if phase == 'off':
         bot.sendMessage(chat_id=update.message.chat_id, text="Create a game first.",reply_to_message_id=update.message.message_id)
     elif not player_id == host_id:
-        context.bot, text="Only the host can request the role setup.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Only the host can request the role setup.",reply_to_message_id=update.message.message_id)
     elif len(roles) == 0:
-        bot.sendMessage(chat_id=update.message.chat_id, text="No roles yet.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="No roles yet.",reply_to_message_id=update.message.message_id)
     else:
         string = "The current setup includes:\n"
         for role in roles:
             string += role.name + " (" + role.alignment + ")\n"
         if not update.message.chat.type == 'private':
             string += "\n... You did mean to do that in public, didn't you?"
-        bot.sendMessage(chat_id=update.message.chat_id, text=string,reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text=string,reply_to_message_id=update.message.message_id)
 
 rolelist_handler = CommandHandler('rolelist',rolelist)
 dispatcher.add_handler(rolelist_handler)
@@ -1112,14 +1112,14 @@ def resetroles(bot,update): #Reset the role setup
     global roles
     player_id = update.message.from_user.id
     if phase == 'off':
-        bot.sendMessage(chat_id=update.message.chat_id, text="Create a game first.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Create a game first.",reply_to_message_id=update.message.message_id)
     elif not player_id == host_id:
-        bot.sendMessage(chat_id=update.message.chat_id, text="Only the host can reset the role setup.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Only the host can reset the role setup.",reply_to_message_id=update.message.message_id)
     elif not phase == 'startup':
-        bot.sendMessage(chat_id=update.message.chat_id, text="You can only reset the roles during startup.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="You can only reset the roles during startup.",reply_to_message_id=update.message.message_id)
     else:
         roles = []
-        bot.sendMessage(chat_id=update.message.chat_id, text="Okay! The roles have now been reset.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Okay! The roles have now been reset.",reply_to_message_id=update.message.message_id)
 
 resetroles_handler = CommandHandler('resetroles',resetroles)
 dispatcher.add_handler(resetroles_handler)
@@ -1133,20 +1133,20 @@ def randomize(bot,update,args):
     global role_database
     player_id = update.message.from_user.id
     if phase == 'off':
-        bot.sendMessage(chat_id=update.message.chat_id, text="Create a game first.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Create a game first.",reply_to_message_id=update.message.message_id)
     elif not player_id == host_id:
-        bot.sendMessage(chat_id=update.message.chat_id, text="Only the host can add roles.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Only the host can add roles.",reply_to_message_id=update.message.message_id)
     elif not phase == 'startup':
-        bot.sendMessage(chat_id=update.message.chat_id, text="You can only add roles during startup.",reply_to_message_id=update.message.message_id)
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="You can only add roles during startup.",reply_to_message_id=update.message.message_id)
     elif len(args) == 0:
-        bot.sendMessage(chat_id=update.message.chat_id, text="Type /randomize [number of players] [number of mafiosi] [power role ratio] to randomize. "
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="Type /randomize [number of players] [number of mafiosi] [power role ratio] to randomize. "
         "[number of mafiosi] must be less than [number of players]. "
         "[power role ratio] works like this: if the ratio is set to X, then 1 in X players will have a power role, rounded up, for each faction.\n\n"
         "Example: /randomize 8 2 3 will add 8 roles, 2 of whom are mafia. One in 3 innocents have a power (so two innocents) and one in 3 mafiosi have "
         "a power (so one mafioso).",
         reply_to_message_id=update.message.message_id)
     elif not len(args) == 3:
-        bot.sendMessage(chat_id=update.message.chat_id, text="You need to specify three integers. Come on, pal. Work with me here.",
+        context.bot.sendMessage(chat_id=update.message.chat_id, text="You need to specify three integers. Come on, pal. Work with me here.",
             reply_to_message_id=update.message.message_id)
     else:
         try:
@@ -1175,15 +1175,15 @@ def randomize(bot,update,args):
                 while len(roles) < number_of_players: #Remaining town Vanilla
                     roles.append(role_database['Vanilla'])
 
-                bot.sendMessage(chat_id=update.message.chat_id, text="A random setup has been generated! "
+                context.bot.sendMessage(chat_id=update.message.chat_id, text="A random setup has been generated! "
                 "You can view it with /rolelist, or you can keep it secret even from yourself. Wahahaha!",reply_to_message_id=update.message.message_id)
 
 
             else: #If numbers are wonky
-                bot.sendMessage(chat_id=update.message.chat_id, text="That doesn't sound like a balanced setup to me...",reply_to_message_id=update.message.message_id)
+                context.bot.sendMessage(chat_id=update.message.chat_id, text="That doesn't sound like a balanced setup to me...",reply_to_message_id=update.message.message_id)
 
         except ValueError:
-            bot.sendMessage(chat_id=update.message.chat_id, text="You need to specify three integers. Come on, pal. Work with me here.",
+            context.bot.sendMessage(chat_id=update.message.chat_id, text="You need to specify three integers. Come on, pal. Work with me here.",
             reply_to_message_id=update.message.message_id)
 
 
