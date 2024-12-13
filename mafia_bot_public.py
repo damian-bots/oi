@@ -50,8 +50,7 @@ class Role:
             bot.sendMessage(chat_id=group_id, text=string)
 
 ##Create roles
-role_database = {"mongodb+srv://tusar:tusar1@cluster0.guw5d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"}
-
+role_database = {}
 role_database['Vanilla'] = Role(name='Vanilla',
     alignment='Innocent',
     info = "You are a Vanilla Innocent!\nYou have no special powers.\nYou win when all the mafiosi are dead.",
