@@ -17,9 +17,6 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text('Hello!')
-
 if __name__ == "__main__":
     application = Application.builder().token('7717376439:AAHUUpfF-wY_L__bEX2QEnecIX0z0K77c04').build()
 
