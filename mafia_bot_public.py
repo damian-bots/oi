@@ -5,6 +5,8 @@
 ### The Private Testing chat id is: [REDACTED]
 
 ###SETUP
+from telegram import Update
+from telegram.ext import ContextTypes
 from telegram.ext import *
 from telegram import *
 from random import shuffle
