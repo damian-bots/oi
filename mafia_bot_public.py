@@ -20,8 +20,6 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 if __name__ == "__main__":
     application = Application.builder().token('7717376439:AAHUUpfF-wY_L__bEX2QEnecIX0z0K77c04').build()
 
-    application.add_handler(CommandHandler("start", start))
-
     application.run_polling()
 
 ###FRIEND LIST
